@@ -1,7 +1,16 @@
 // file: next.config.js
 
 /** @type {import('next').NextConfig} */
-const nextConfig = {};
+const nextConfig = {
+	images: {
+		remotePatterns: [
+			{
+				protocol: 'https',
+				hostname: 'cat-images.maximoguk.com',
+			},
+		],
+	},
+};
 
 module.exports = nextConfig;
 
@@ -17,10 +26,6 @@ if (process.env.NODE_ENV === 'development') {
 			CAT_IMAGE_BUCKET: {
 				type: 'r2',
 				bucketName: 'cat-image-bucket',
-			},
-			CAT_IMAGE_URLS: {
-				type: 'kv',
-				id: 'cat-image-urls',
 			},
 		},
 	});

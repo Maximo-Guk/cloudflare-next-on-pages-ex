@@ -3,23 +3,34 @@
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
 
-async function getCatPictures() {
+async function getCatPictures(
+	setCatImageKeys: React.Dispatch<React.SetStateAction<string[]>>
+) {
 	const res = await fetch('/api/cats');
-	const parsedRes = await res.json();
+	const parsedRes: { imageKeys: string[] } = await res.json();
+	setCatImageKeys(parsedRes.imageKeys);
 }
 
 function Cats() {
-	const [catImageUrls, setCatImageUrls] = useState<string[]>([]);
+	const [catImageKeys, setCatImageKeys] = useState<string[]>([]);
 
 	useEffect(() => {
-		// setCatImageUrls(getCatPictures());
+		getCatPictures(setCatImageKeys);
 	}, []);
 
 	return (
 		<>
-			{catImageUrls.length > 0
-				? catImageUrls.map((imageUrl) => {
-						<Image src="imageUrl" alt="Image of a cat" />;
+			{catImageKeys.length > 0
+				? catImageKeys.map((imageKey) => {
+						return (
+							<Image
+								src={`https://cat-images.maximoguk.com/${imageKey}`}
+								key={imageKey}
+								width={200}
+								height={200}
+								alt="Image of a cat"
+							/>
+						);
 				  })
 				: null}
 		</>
